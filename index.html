@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk-Reward Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .input-box {
+            background-color: #dcd6f7;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .input-box input {
+            width: 80%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .calculate-btn {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .calculate-btn:hover {
+            background: #218838;
+        }
+        .result-box {
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between label and input */
+        }
+
+        input {
+            flex: 1; /* Makes all input fields the same size */
+            min-width: 80px;
+            max-width: 120px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Risk-Reward Calculator</h2>
+
+        <div class="input-box">
+            <label><b>Symbol:</b> <input type="text" id="symbol"></label><br>
+            <label><b>Share Price:</b> <input type="number" id="sharePrice" value="1000"></label><br>
+            <label><b>Portfolio Size ₹:</b> <input type="number" id="portfolioSize" value="100000"></label><br>
+            <label><b>Position Size %:</b> <input type="number" id="positionSize" value="12"></label><br>
+            <label><b>% StopLoss:</b> <input type="number" id="stopLoss" value="4"></label><br>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateRiskReward()">Calculate</button>
+
+        <!-- Table for Risk Management -->
+        <div class="result-box">
+            <table>
+                <tr>
+                    <td><b>₹ Amt Position:</b></td>
+                    <td id="amtPosition">-</td>
+                </tr>
+                <tr>
+                    <td><b># of Shares to Buy:</b></td>
+                    <td id="sharesToBuy">-</td>
+                </tr>
+                <tr>
+                    <td><b>₹ Stop Amount:</b></td>
+                    <td id="stopAmount">-</td>
+                </tr>
+                <tr>
+                    <td><b>Stop Price:</b></td>
+                    <td id="stopPrice">-</td>
+                </tr>
+                <tr>
+                    <td><b>Risk as a % of Equity:</b></td>
+                    <td id="riskEquity">-</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Risk-Reward Table -->
+        <table>
+            <tr>
+                <th>1-R (risk)</th>
+                <th>2R</th>
+                <th>3R</th>
+                <th>4R</th>
+                <th>5R</th>
+                <th>6R</th>
+            </tr>
+            <tr>
+                <td id="r1">-</td>
+                <td id="r2">-</td>
+                <td id="r3">-</td>
+                <td id="r4">-</td>
+                <td id="r5">-</td>
+                <td id="r6">-</td>
+            </tr>
+            <tr>
+                <td id="price1">-</td>
+                <td id="price2">-</td>
+                <td id="price3">-</td>
+                <td id="price4">-</td>
+                <td id="price5">-</td>
+                <td id="price6">-</td>
+            </tr>
+            <tr>
+                <td>% Gain</td>
+                <td id="gain2">-</td>
+                <td id="gain3">-</td>
+                <td id="gain4">-</td>
+                <td id="gain5">-</td>
+                <td id="gain6">-</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculateRiskReward() {
+            let sharePrice = parseFloat(document.getElementById("sharePrice").value);
+            let portfolioSize = parseFloat(document.getElementById("portfolioSize").value);
+            let positionSizePercent = parseFloat(document.getElementById("positionSize").value);
+            let stopLossPercent = parseFloat(document.getElementById("stopLoss").value);
+
+            if (isNaN(sharePrice) || isNaN(portfolioSize) || isNaN(positionSizePercent) || isNaN(stopLossPercent)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            // Calculate ₹ Amt Position
+            let amtPosition = (portfolioSize * positionSizePercent) / 100;
+            document.getElementById("amtPosition").textContent = `₹${amtPosition.toFixed(2)}`;
+
+            // Calculate # of Shares to Buy
+            let sharesToBuy = Math.floor(amtPosition / sharePrice);
+            document.getElementById("sharesToBuy").textContent = sharesToBuy;
+
+            // Calculate ₹ Stop Amount
+            let stopAmount = (amtPosition * stopLossPercent) / 100;
+            document.getElementById("stopAmount").textContent = `₹${stopAmount.toFixed(2)}`;
+
+            // Calculate Stop Price
+            let stopPrice = sharePrice - (sharePrice * stopLossPercent) / 100;
+            document.getElementById("stopPrice").textContent = stopPrice.toFixed(2);
+
+            // Calculate Risk as a % of Equity
+            let riskEquity = (stopAmount / portfolioSize) * 100;
+            document.getElementById("riskEquity").textContent = `${riskEquity.toFixed(2)}%`;
+
+            let stopLossAmount = (sharePrice * stopLossPercent) / 100;
+            // Calculate Risk-Reward Levels (1R, 2R, ..., 6R)
+            document.getElementById("r1").textContent = stopLossAmount.toFixed(2);
+            document.getElementById("r2").textContent = (stopLossAmount * 2).toFixed(2);
+            document.getElementById("r3").textContent = (stopLossAmount * 3).toFixed(2);
+            document.getElementById("r4").textContent = (stopLossAmount * 4).toFixed(2);
+            document.getElementById("r5").textContent = (stopLossAmount * 5).toFixed(2);
+            document.getElementById("r6").textContent = (stopLossAmount * 6).toFixed(2);
+
+            // Calculate Target Prices
+            document.getElementById("price1").textContent = (sharePrice + stopAmount).toFixed(2);
+            document.getElementById("price2").textContent = (sharePrice + stopAmount * 2).toFixed(2);
+            document.getElementById("price3").textContent = (sharePrice + stopAmount * 3).toFixed(2);
+            document.getElementById("price4").textContent = (sharePrice + stopAmount * 4).toFixed(2);
+            document.getElementById("price5").textContent = (sharePrice + stopAmount * 5).toFixed(2);
+            document.getElementById("price6").textContent = (sharePrice + stopAmount * 6).toFixed(2);
+
+            // Calculate % Gain
+            document.getElementById("gain2").textContent = (stopLossPercent * 2).toFixed(0) + "%";
+            document.getElementById("gain3").textContent = (stopLossPercent * 3).toFixed(0) + "%";
+            document.getElementById("gain4").textContent = (stopLossPercent * 4).toFixed(0) + "%";
+            document.getElementById("gain5").textContent = (stopLossPercent * 5).toFixed(0) + "%";
+            document.getElementById("gain6").textContent = (stopLossPercent * 6).toFixed(0) + "%";
+        }
+    </script>
+
+</body>
+</html>
