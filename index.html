@@ -198,12 +198,12 @@
             document.getElementById("r6").textContent = (stopLossAmount * 6).toFixed(2);
 
             // Calculate Target Prices
-            document.getElementById("price1").textContent = (sharePrice + stopAmount).toFixed(2);
-            document.getElementById("price2").textContent = (sharePrice + stopAmount * 2).toFixed(2);
-            document.getElementById("price3").textContent = (sharePrice + stopAmount * 3).toFixed(2);
-            document.getElementById("price4").textContent = (sharePrice + stopAmount * 4).toFixed(2);
-            document.getElementById("price5").textContent = (sharePrice + stopAmount * 5).toFixed(2);
-            document.getElementById("price6").textContent = (sharePrice + stopAmount * 6).toFixed(2);
+            document.getElementById("price1").textContent = (sharePrice + stopLossAmount).toFixed(2);
+            document.getElementById("price2").textContent = (sharePrice + stopLossAmount * 2).toFixed(2);
+            document.getElementById("price3").textContent = (sharePrice + stopLossAmount * 3).toFixed(2);
+            document.getElementById("price4").textContent = (sharePrice + stopLossAmount * 4).toFixed(2);
+            document.getElementById("price5").textContent = (sharePrice + stopLossAmount * 5).toFixed(2);
+            document.getElementById("price6").textContent = (sharePrice + stopLossAmount * 6).toFixed(2);
 
             // Calculate % Gain
             document.getElementById("gain2").textContent = (stopLossPercent * 2).toFixed(0) + "%";
