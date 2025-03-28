@@ -152,7 +152,6 @@
                 <th>3R</th>
                 <th>4R</th>
                 <th>5R</th>
-                <th>6R</th>
             </tr>
             <tr>
                 <td id="r1">-</td>
@@ -160,7 +159,6 @@
                 <td id="r3">-</td>
                 <td id="r4">-</td>
                 <td id="r5">-</td>
-                <td id="r6">-</td>
             </tr>
             <tr>
                 <td id="price1">-</td>
@@ -168,7 +166,6 @@
                 <td id="price3">-</td>
                 <td id="price4">-</td>
                 <td id="price5">-</td>
-                <td id="price6">-</td>
             </tr>
             <tr>
                 <td>% Gain</td>
@@ -176,7 +173,37 @@
                 <td id="gain3">-</td>
                 <td id="gain4">-</td>
                 <td id="gain5">-</td>
+            </tr>
+        </table>
+        <!-- Risk-Reward Table -->
+        <table>
+            <tr>
+                <th>6R</th>
+                <th>7R</th>
+                <th>8R</th>
+                <th>9R</th>
+                <th>10R</th>
+            </tr>
+            <tr>
+                <td id="r6">-</td>
+                <td id="r7">-</td>
+                <td id="r8">-</td>
+                <td id="r9">-</td>
+                <td id="r10">-</td>
+            </tr>
+            <tr>
+                <td id="price6">-</td>
+                <td id="price7">-</td>
+                <td id="price8">-</td>
+                <td id="price9">-</td>
+                <td id="price10">-</td>
+            </tr>
+            <tr>
                 <td id="gain6">-</td>
+                <td id="gain7">-</td>
+                <td id="gain8">-</td>
+                <td id="gain9">-</td>
+                <td id="gain10">-</td>
             </tr>
         </table>
     </div>
@@ -230,6 +257,10 @@
             document.getElementById("r4").textContent = (stopLossAmount * 4).toFixed(2);
             document.getElementById("r5").textContent = (stopLossAmount * 5).toFixed(2);
             document.getElementById("r6").textContent = (stopLossAmount * 6).toFixed(2);
+            document.getElementById("r7").textContent = (stopLossAmount * 7).toFixed(2);
+            document.getElementById("r8").textContent = (stopLossAmount * 8).toFixed(2);
+            document.getElementById("r9").textContent = (stopLossAmount * 9).toFixed(2);
+            document.getElementById("r10").textContent = (stopLossAmount * 10).toFixed(2);
 
             // Calculate Target Prices
             document.getElementById("price1").textContent = (sharePrice + stopLossAmount).toFixed(2);
@@ -240,6 +271,10 @@
             document.getElementById("price4").textContent = (sharePrice + stopLossAmount * 4).toFixed(2);
             document.getElementById("price5").textContent = (sharePrice + stopLossAmount * 5).toFixed(2);
             document.getElementById("price6").textContent = (sharePrice + stopLossAmount * 6).toFixed(2);
+            document.getElementById("price7").textContent = (sharePrice + stopLossAmount * 7).toFixed(2);
+            document.getElementById("price8").textContent = (sharePrice + stopLossAmount * 8).toFixed(2);
+            document.getElementById("price9").textContent = (sharePrice + stopLossAmount * 9).toFixed(2);
+            document.getElementById("price10").textContent = (sharePrice + stopLossAmount * 10).toFixed(2);
 
             // Calculate % Gain
             document.getElementById("gain2").textContent = (stopLossPercent * 2).toFixed(0) + "%";
@@ -247,6 +282,10 @@
             document.getElementById("gain4").textContent = (stopLossPercent * 4).toFixed(0) + "%";
             document.getElementById("gain5").textContent = (stopLossPercent * 5).toFixed(0) + "%";
             document.getElementById("gain6").textContent = (stopLossPercent * 6).toFixed(0) + "%";
+            document.getElementById("gain7").textContent = (stopLossPercent * 7).toFixed(0) + "%";
+            document.getElementById("gain8").textContent = (stopLossPercent * 8).toFixed(0) + "%";
+            document.getElementById("gain9").textContent = (stopLossPercent * 9).toFixed(0) + "%";
+            document.getElementById("gain10").textContent = (stopLossPercent * 10).toFixed(0) + "%";
         }
 
         document.addEventListener('DOMContentLoaded', function() {
