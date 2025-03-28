@@ -11,7 +11,7 @@
             background-color: #f5f5f5;
         }
         .container {
-            width: 90%;
+            width: 50%;
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -26,7 +26,7 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
         }
         th {
@@ -45,8 +45,8 @@
             margin: 5px 0;
         }
         .calculate-btn {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 1px;
+            padding: 5px;
             width: 100%;
             background: #28a745;
             color: white;
@@ -60,10 +60,10 @@
         }
         .result-box {
             background-color: #d4edda;
-            padding: 10px;
+            padding: 1px;
             border-radius: 5px;
             text-align: left;
-            margin-top: 20px;
+            margin-top: 5px;
         }
         .input-container {
             display: flex;
@@ -76,22 +76,43 @@
             min-width: 80px;
             max-width: 120px;
         }
+        .red-text {
+            color: red;
+            font-weight: bold;
+        }
+        .green-text {
+            color: green;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        button {
+            cursor: pointer;
+          }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Risk-Reward Calculator</h2>
+        <h2 style="font-size: 18px;">Risk-Reward Calculator</h2>
 
         <div class="input-box">
-            <label><b>Symbol:</b> <input type="text" id="symbol"></label><br>
+            <label><b>Symbol:</b> <input type="text" id="symbol"></label>
             <label><b>Share Price:</b> <input type="number" id="sharePrice" value="1000"></label><br>
             <label><b>Portfolio Size ₹:</b> <input type="number" id="portfolioSize" value="100000"></label><br>
-            <label><b>Position Size %:</b> <input type="number" id="positionSize" value="12"></label><br>
-            <label><b>% StopLoss:</b> <input type="number" id="stopLoss" value="4"></label><br>
+            <label><b>PositionSize%:</b> <input type="number" id="positionSize" value="12" style="width: 50px;"></label><br>
+            <!-- <label><b>StopLoss%:</b> <input type="number" id="stopLoss" value="4" style="width: 50px;"></label><br> -->
+            <label>
+                <b>StopLoss%:</b>
+                <div style="display: inline-flex; align-items: center;">
+                  <button type="button" id="minus" style="padding: 5px 10px;">-</button>
+                  <input type="number" id="stopLoss" value="4" style="width: 50%;">
+                  <button type="button" id="plus" style="padding: 5px 10px;">+</button>
+                </div>
+              </label><br>
+            <button class="calculate-btn" onclick="calculateRiskReward()">Calculate</button>
         </div>
-
-        <button class="calculate-btn" onclick="calculateRiskReward()">Calculate</button>
+        
+        
 
         <!-- Table for Risk Management -->
         <div class="result-box">
@@ -105,12 +126,16 @@
                     <td id="sharesToBuy">-</td>
                 </tr>
                 <tr>
-                    <td><b>₹ Stop Amount:</b></td>
-                    <td id="stopAmount">-</td>
+                    <td><b>StopLoss Price:</b></td>
+                    <td id="stopPrice">-</td>
                 </tr>
                 <tr>
-                    <td><b>Stop Price:</b></td>
-                    <td id="stopPrice">-</td>
+                    <td><b>Target3R Price:</b></td>
+                    <td id="target3r">-</td>
+                </tr>
+                <tr>
+                    <td><b>₹ Stop Amount:</b></td>
+                    <td id="stopAmount">-</td>
                 </tr>
                 <tr>
                     <td><b>Risk as a % of Equity:</b></td>
@@ -162,6 +187,7 @@
             let portfolioSize = parseFloat(document.getElementById("portfolioSize").value);
             let positionSizePercent = parseFloat(document.getElementById("positionSize").value);
             let stopLossPercent = parseFloat(document.getElementById("stopLoss").value);
+            let stopLossAmount = (sharePrice * stopLossPercent) / 100;
 
             if (isNaN(sharePrice) || isNaN(portfolioSize) || isNaN(positionSizePercent) || isNaN(stopLossPercent)) {
                 alert("Please enter valid numbers.");
@@ -176,19 +202,27 @@
             let sharesToBuy = Math.floor(amtPosition / sharePrice);
             document.getElementById("sharesToBuy").textContent = sharesToBuy;
 
+            // Calculate StopLoss Price
+            let stopPrice = sharePrice - (sharePrice * stopLossPercent) / 100;
+            const stopPriceTxt = document.getElementById("stopPrice")
+            stopPriceTxt.textContent = stopPrice.toFixed(2);
+            stopPriceTxt.classList.add("red-text");
+
+            // Calculate 3R Target Price
+            let target3r = sharePrice + stopLossAmount * 3;
+            const target3rPriceTxt = document.getElementById("target3r");
+            target3rPriceTxt.textContent = target3r;
+            target3rPriceTxt.classList.add("green-text");
+
             // Calculate ₹ Stop Amount
             let stopAmount = (amtPosition * stopLossPercent) / 100;
             document.getElementById("stopAmount").textContent = `₹${stopAmount.toFixed(2)}`;
-
-            // Calculate Stop Price
-            let stopPrice = sharePrice - (sharePrice * stopLossPercent) / 100;
-            document.getElementById("stopPrice").textContent = stopPrice.toFixed(2);
 
             // Calculate Risk as a % of Equity
             let riskEquity = (stopAmount / portfolioSize) * 100;
             document.getElementById("riskEquity").textContent = `${riskEquity.toFixed(2)}%`;
 
-            let stopLossAmount = (sharePrice * stopLossPercent) / 100;
+            
             // Calculate Risk-Reward Levels (1R, 2R, ..., 6R)
             document.getElementById("r1").textContent = stopLossAmount.toFixed(2);
             document.getElementById("r2").textContent = (stopLossAmount * 2).toFixed(2);
@@ -200,7 +234,9 @@
             // Calculate Target Prices
             document.getElementById("price1").textContent = (sharePrice + stopLossAmount).toFixed(2);
             document.getElementById("price2").textContent = (sharePrice + stopLossAmount * 2).toFixed(2);
-            document.getElementById("price3").textContent = (sharePrice + stopLossAmount * 3).toFixed(2);
+            const price3 = document.getElementById("price3");
+            price3.textContent = (sharePrice + stopLossAmount * 3).toFixed(2);
+            price3.classList.add("green-text");
             document.getElementById("price4").textContent = (sharePrice + stopLossAmount * 4).toFixed(2);
             document.getElementById("price5").textContent = (sharePrice + stopLossAmount * 5).toFixed(2);
             document.getElementById("price6").textContent = (sharePrice + stopLossAmount * 6).toFixed(2);
@@ -212,6 +248,26 @@
             document.getElementById("gain5").textContent = (stopLossPercent * 5).toFixed(0) + "%";
             document.getElementById("gain6").textContent = (stopLossPercent * 6).toFixed(0) + "%";
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const stopLossInput = document.getElementById('stopLoss');
+            const minusButton = document.getElementById('minus');
+            const plusButton = document.getElementById('plus');
+          
+            minusButton.addEventListener('click', function() {
+              let currentValue = parseFloat(stopLossInput.value);
+              if (!isNaN(currentValue)) {
+                stopLossInput.value = (currentValue - 0.5).toFixed(1);
+              }
+            });
+          
+            plusButton.addEventListener('click', function() {
+              let currentValue = parseFloat(stopLossInput.value);
+              if (!isNaN(currentValue)) {
+                stopLossInput.value = (currentValue + 0.5).toFixed(1);
+              }
+            });
+          });
     </script>
 
 </body>
